@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3>User Dashboard</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-3 text-center">
+                @if (User.Claims.FirstOrDefault(c => c.Type == "picture")?.Value is string pictureUrl && !string.IsNullOrEmpty(pictureUrl))
+                {
+                    <img src="@pictureUrl" alt="Profile" class="img-fluid rounded-circle mb-3" style="max-width: 150px;" />
+                }
+                else
+                {
+                    <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 150px; height: 150px; margin: 0 auto;">
+                        <h1>@User.Identity.Name.Substring(0, 1).ToUpper()</h1>
+                    </div>
+                }
+                <h4>@User.Identity.Name</h4>
+                <p class="text-muted">@User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value</p>
+            </div>
+            <div class="col-md-9">
+                <h4>Welcome to your Dashboard</h4>
+                <p>This is a protected area only available to authenticated users.</p>
+
+                <h5>Your Account Information</h5>
+                <ul>
+                    <li><strong>User ID:</strong> @User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value</li>
+                    <li><strong>Email:</strong> @User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value</li>
+                    <li><strong>Name:</strong> @User.Identity.Name</li>
+                    <li><strong>Authentication Type:</strong> @(User.FindFirst("http://schemas.microsoft.com/identity/claims/identityprovider")?.Value ?? "Local")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

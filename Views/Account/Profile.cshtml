@@ -1,0 +1,62 @@
+﻿@model GoogleAuth.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3>Your Profile</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-3 text-center">
+                @if (!string.IsNullOrEmpty(Model.ProfilePictureUrl))
+                {
+                    <img src="@Model.ProfilePictureUrl" alt="Profile" class="img-fluid rounded-circle mb-3" style="max-width: 150px;" />
+                }
+                else
+                {
+                    <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 150px; height: 150px; margin: 0 auto;">
+                        <h1>@Model.Name.Substring(0, 1).ToUpper()</h1>
+                    </div>
+                }
+            </div>
+            <div class="col-md-9">
+                <form asp-action="UpdateProfile" method="post">
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label">Full Name</label>
+                        <input asp-for="Name" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label">Email</label>
+                        <input asp-for="Email" class="form-control" readonly />
+                    </div>
+
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                    </div>
+                </form>
+
+                <hr />
+
+                <h4>Connected Accounts</h4>
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="bi bi-google me-2"></i> Google
+                        </div>
+                        @if (!string.IsNullOrEmpty(Model.GoogleId))
+                        {
+                            <span class="badge bg-success">Connected</span>
+                        }
+                        else
+                        {
+                            <a asp-action="GoogleLogin" class="btn btn-sm btn-outline-danger">Connect</a>
+                        }
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
